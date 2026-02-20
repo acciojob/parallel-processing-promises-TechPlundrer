@@ -27,7 +27,6 @@ function downloadImage(url) {
 function downloadImages() {
   output.innerHTML = "";
   errorDiv.textContent = "";
-
   loading.style.display = "block";
 
   const promises = images.map(function (image) {
