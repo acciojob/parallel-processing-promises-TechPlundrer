@@ -1,4 +1,3 @@
-//your JS code here. If required.
 const output = document.getElementById("output");
 const btn = document.getElementById("download-images-button");
 const loading = document.getElementById("loading");
@@ -11,43 +10,42 @@ const images = [
 ];
 
 function downloadImage(url) {
-	return new Promise(function (resolve, reject) {
-		const img = new Image();
-		img.src = url;
+  return new Promise(function (resolve, reject) {
+    const img = new Image();
+    img.src = url;
 
-		img.onload = function() {
-			resolved(img);
-		};
-		img.onerror = function () {
-			reject("Failed to load image: " + url);
-		};
-	});
+    img.onload = function () {
+      resolve(img);
+    };
+
+    img.onerror = function () {
+      reject("Failed to load image: " + url);
+    };
+  });
 }
 
-function downloadImage() {
-	output.innerHTML = "";
-	errorDiv.textContent = "";
+function downloadImages() {
+  output.innerHTML = "";
+  errorDiv.textContent = "";
 
-	loading.style.display = "block";
+  loading.style.display = "block";
 
-	const promises = images.map(function (image) {
-		return downloadImage(image.url);
-	});
+  const promises = images.map(function (image) {
+    return downloadImage(image.url);
+  });
 
-	Promise.all(promises)
-	.then(function (loadedImages) {
+  Promise.all(promises)
+    .then(function (loadedImages) {
+      loading.style.display = "none";
 
-		loading.style.display = "none";
-
-		loadedImages.forEach(function (img) {
-			output.appendChild(img);
-		});
-	})
-	.catch(function (error) {
-
-		loading.style.display = "none";
-
-		errorDiv.textContent = err;
-	});
+      loadedImages.forEach(function (img) {
+        output.appendChild(img);
+      });
+    })
+    .catch(function (error) {
+      loading.style.display = "none";
+      errorDiv.textContent = error;
+    });
 }
+
 btn.addEventListener("click", downloadImages);
